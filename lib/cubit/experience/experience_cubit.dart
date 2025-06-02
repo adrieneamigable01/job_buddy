@@ -3,9 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:job_buddy/constants/api_constants.dart';
 import 'package:job_buddy/cubit/profile/profile_cubit.dart';
 import 'package:job_buddy/models/experience_model.dart';
-import 'package:job_buddy/models/experience_model.dart';
 import 'package:job_buddy/models/response_model.dart';
-
 import 'package:meta/meta.dart';
 import 'package:job_buddy/services/api_service.dart';
 
@@ -16,7 +14,6 @@ class ExperienceCubit extends Cubit<ExperienceState> {
 
   final APIServiceRepo _apiServiceRepo = APIServiceRepo();
 
-  final ExperienceBox _experienceBox = ExperienceBox();
 
   clearBoxes() async {
     // await _userBox.clear(); 
