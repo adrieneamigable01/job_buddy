@@ -20,6 +20,8 @@ import 'package:job_buddy/pages/splash_page.dart';
 
 //Imports
 import 'package:go_router/go_router.dart';
+import 'package:job_buddy/widgets/auth/forgot_password_mobile_portrait.dart';
+import 'package:job_buddy/widgets/auth/reset_password_mobile_portrait.dart';
 import 'package:job_buddy/widgets/dashboard/subscription_plan/mobile/subscription_result.dart';
 
 // GoRouter configuration
@@ -28,74 +30,47 @@ final router = GoRouter(
   initialLocation: '/splash',
   // initialLocation: '/dashboard_web',
   routes: <RouteBase>[
+    GoRoute(path: '/', builder: (context, state) => LoginPage()),
     GoRoute(
-      path: '/',
-      builder: (context, state) => LoginPage()
-    ),
+        path: '/registration', builder: (context, state) => RegistrationPage()),
     GoRoute(
-      path: '/registration',
-      builder: (context, state) => RegistrationPage()
-    ),
+        path: '/forgot-password',
+        builder: (context, state) => ForgotPasswordPage()),
     GoRoute(
-      path: '/dashboard',
-      builder: (context, state) => DashboardPage()
-    ),
+        path: '/reset-password',
+        builder: (context, state) => ResetPasswordMobilePortait()),
+    GoRoute(path: '/dashboard', builder: (context, state) => DashboardPage()),
+    GoRoute(path: '/profile', builder: (context, state) => ProfilePage()),
     GoRoute(
-      path: '/profile',
-      builder: (context, state) => ProfilePage()
-    ),
+        path: '/subscription_plan',
+        builder: (context, state) => SubscriptionPlanPage()),
     GoRoute(
-      path: '/subscription_plan',
-      builder: (context, state) => SubscriptionPlanPage()
-    ),
+        path: '/subscription', builder: (context, state) => SubscriptionPage()),
+    GoRoute(path: '/add_post', builder: (context, state) => AddPostPage()),
     GoRoute(
-      path: '/subscription',
-      builder: (context, state) => SubscriptionPage()
-    ),
+        path: '/job_post_details',
+        builder: (context, state) => JobPostDetailPage()),
     GoRoute(
-      path: '/add_post',
-      builder: (context, state) => AddPostPage()
-    ),
+        path: '/candidate_details',
+        builder: (context, state) => CandidateDetailsPage()),
     GoRoute(
-      path: '/job_post_details',
-      builder: (context, state) => JobPostDetailPage()
-    ),
+        path: '/candidate_detail',
+        builder: (context, state) => CandidateDetailPage()),
     GoRoute(
-      path: '/candidate_details',
-      builder: (context, state) => CandidateDetailsPage()
-    ),
+        path: '/add_company', builder: (context, state) => AddCompanyPage()),
+    GoRoute(path: '/resume_page', builder: (context, state) => ResumePage()),
     GoRoute(
-      path: '/candidate_detail',
-      builder: (context, state) => CandidateDetailPage()
-    ),
+        path: '/chatmessages', builder: (context, state) => ChatMessagesPage()),
     GoRoute(
-      path: '/add_company',
-      builder: (context, state) => AddCompanyPage()
-    ),
+        path: '/newmessages',
+        builder: (context, state) => NewChatMessagesPage()),
+    GoRoute(path: '/chatinfo', builder: (context, state) => ChatInfoPage()),
     GoRoute(
-      path: '/resume_page',
-      builder: (context, state) => ResumePage()
-    ),
+        path: '/notification_details',
+        builder: (context, state) => NotificationDetailPage()),
     GoRoute(
-      path: '/chatmessages',
-      builder: (context, state) => ChatMessagesPage()
-    ),
-    GoRoute(
-      path: '/newmessages',
-      builder: (context, state) => NewChatMessagesPage()
-    ),
-    GoRoute(
-      path: '/chatinfo',
-      builder: (context, state) => ChatInfoPage()
-    ),
-    GoRoute(
-      path: '/notification_details',
-      builder: (context, state) => NotificationDetailPage()
-    ),
-    GoRoute(
-      path: '/user_validation',
-      builder: (context, state) => UserValidationPage()
-    ),
+        path: '/user_validation',
+        builder: (context, state) => UserValidationPage()),
     GoRoute(
       path: '/subscription-result',
       builder: (context, state) {

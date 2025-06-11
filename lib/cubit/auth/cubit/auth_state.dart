@@ -53,7 +53,6 @@ class SuccessAuthState extends AuthState {
   }
 }
 
-
 class FailureLogoutState extends AuthState {
   String errorMessage;
   bool isError;
@@ -86,7 +85,6 @@ class SuccessLogoutAuthState extends AuthState {
   }
 }
 
-
 class LoadingLogoutState extends AuthState {
   bool isLoading;
 
@@ -96,3 +94,34 @@ class LoadingLogoutState extends AuthState {
   List<Object> get props => [isLoading];
 }
 
+class SuccessForgotPasswordState extends AuthState {
+  String successMessage;
+  bool isError;
+
+  SuccessForgotPasswordState(this.successMessage, this.isError);
+
+  @override
+  List<Object> get props => [successMessage, isError];
+
+  @override
+  String toString() {
+    print("**** Authentication Success State Message .... : ${successMessage}");
+    return successMessage;
+  }
+}
+
+class FailureForgotPasswordState extends AuthState {
+  final String errorMessage;
+  final bool isError;
+
+  const FailureForgotPasswordState(this.errorMessage, this.isError);
+
+  @override
+  List<Object> get props => [errorMessage, isError];
+
+  @override
+  String toString() {
+    print("**** Authentication Failure State Message .... : ${errorMessage}");
+    return errorMessage;
+  }
+}

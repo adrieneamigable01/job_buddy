@@ -80,17 +80,19 @@ class LoginPageMobilePortrait extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                      Text(
-                                        state.errorMessage,
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.redAccent,
-                                          decoration: TextDecoration
-                                              .underline, // Underline the text
-                                        ),
+                                    Text(
+                                      state.errorMessage,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.redAccent,
+                                        decoration: TextDecoration
+                                            .underline, // Underline the text
                                       ),
-                                      SizedBox(height: 30,),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                    ),
                                   ],
                                 );
                               }
@@ -139,27 +141,44 @@ class LoginPageMobilePortrait extends StatelessWidget {
                               onChanged: (string) => {},
                               onFieldSubmitted: (string) => {}),
                           const SizedBox(height: 10),
-                          RichText(
-                              text: TextSpan(
-                                style: const TextStyle(fontSize: 14.0),
-                                children: <TextSpan>[
-                                  const TextSpan(
-                                      text: "Don’t have account? ",
-                                      style: TextStyle(color: Colors.black)),
-                                  TextSpan(
-                                    text: "Sign Up",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        context.push('/registration');
-                                      },
-                                  ),
-                                ],
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                // Navigate to forgot password screen or show dialog
+                                context.push('/forgot-password');
+                              },
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                  color: Color(0xff1F94D4),
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
                             ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(fontSize: 14.0),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: "Don’t have account? ",
+                                    style: TextStyle(color: Colors.black)),
+                                TextSpan(
+                                  text: "Sign Up",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      context.push('/registration');
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           Align(
                             alignment: Alignment.center,
