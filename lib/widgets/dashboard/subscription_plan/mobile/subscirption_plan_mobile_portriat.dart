@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_buddy/constants/api_constants.dart';
 import 'package:job_buddy/cubit/subscription/subscription_cubit.dart';
 import 'package:job_buddy/models/subscription_model.dart';
 import 'package:job_buddy/models/subscription_plan_model.dart';
@@ -10,7 +11,6 @@ import 'package:job_buddy/models/user_model.dart';
 import 'package:job_buddy/widgets/common/alert_dialog_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_buddy/widgets/dashboard/subscription_plan/mobile/paypall_webview.dart';
-
 
 bool isFirstLoadFlag = true;
 final UserBox _userBox = UserBox();
@@ -40,7 +40,7 @@ class SubscriptionPlanMobilePortrait extends StatelessWidget {
               context.push('/subscription_plan');
             },
             onPressedConfirm: () async {
-              context.go('/subscription');  
+              context.go('/subscription');
             },
             context: context,
           );
@@ -72,7 +72,7 @@ class SubscriptionPlanMobilePortrait extends StatelessWidget {
                       return _buildPlanCard(
                         context: context,
                         id: plan.id,
-                        plan_id:plan.planId,
+                        plan_id: plan.planId,
                         title: plan.planName ?? '',
                         price: plan.price ?? '',
                         features: plan.description ?? '',
@@ -111,11 +111,15 @@ class SubscriptionPlanMobilePortrait extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          Text(title,
+              style:
+                  const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          Text("₱$price", style: const TextStyle(fontSize: 18, color: Colors.black54)),
+          Text("₱$price",
+              style: const TextStyle(fontSize: 18, color: Colors.black54)),
           const SizedBox(height: 12),
-          Text(features, style: const TextStyle(fontSize: 18, color: Colors.black54)),
+          Text(features,
+              style: const TextStyle(fontSize: 18, color: Colors.black54)),
           const SizedBox(height: 20),
           isCurrentSubscription
               ? const Center(
@@ -133,43 +137,44 @@ class SubscriptionPlanMobilePortrait extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
+                      if (title == "Free") {
+                        BlocProvider.of<SubscriptionCubit>(context)
+                            .subscribe(plan_id: plan_id);
+                        return;
+                      } else {
+                        final userId = _userBox.data.userId;
+                        final planId =
+                            plan_id; // Replace with actual planId per plan
+                        Uri backendSubscribeUri = Uri.parse(
+                            "http://$kProductionDomain/job_buddy_api/paypal/subscription/subscribe?user_id=$userId&plan_id=$planId");
+                        final response = await http.get(backendSubscribeUri);
 
-                      if(title == "Free"){
-                         BlocProvider.of<SubscriptionCubit>(context)
-                                .subscribe(plan_id: plan_id);return;
-                      }else{
-                         final userId = _userBox.data.userId;
-                          final planId = plan_id; // Replace with actual planId per plan
-                          Uri backendSubscribeUri = Uri.parse("http://192.168.1.3/job_buddy_api/paypal/subscription/subscribe?user_id=$userId&plan_id=$planId");
-                          final response = await http.get(backendSubscribeUri);
+                        if (response.statusCode == 200) {
+                          final data = jsonDecode(response.body);
+                          final links = data['links'] as List<dynamic>;
+                          final approveLink = links.firstWhere(
+                            (link) => link['rel'] == 'approve',
+                            orElse: () => null,
+                          );
 
-                          if (response.statusCode == 200) {
-                            final data = jsonDecode(response.body);
-                            final links = data['links'] as List<dynamic>;
-                            final approveLink = links.firstWhere(
-                              (link) => link['rel'] == 'approve',
-                              orElse: () => null,
-                            );
-
-                            if (approveLink != null) {
-                              Uri approvalUrl = Uri.parse(approveLink['href']);
-                              if (context.mounted) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => PaypalWebViewPage(approvalUrl: approvalUrl.toString()),
-                                  ),
-                                );
-                              }
-                            } else {
-                              print("No approve link found");
+                          if (approveLink != null) {
+                            Uri approvalUrl = Uri.parse(approveLink['href']);
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => PaypalWebViewPage(
+                                      approvalUrl: approvalUrl.toString()),
+                                ),
+                              );
                             }
                           } else {
-                            print("Backend error: ${response.statusCode}");
+                            print("No approve link found");
                           }
+                        } else {
+                          print("Backend error: ${response.statusCode}");
+                        }
                       }
-
-                     
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black87,
