@@ -140,7 +140,6 @@ class LoginPageMobilePortrait extends StatelessWidget {
                               obscureText: true,
                               onChanged: (string) => {},
                               onFieldSubmitted: (string) => {}),
-                          const SizedBox(height: 10),
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(

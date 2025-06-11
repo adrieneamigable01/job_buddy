@@ -1,4 +1,4 @@
-const _kProductionDomain = '192.168.1.12';
+const _kProductionDomain = '192.168.1.17';
 
 // const _kDevelopmentDomain = '192.168.1.26:8000';
 
