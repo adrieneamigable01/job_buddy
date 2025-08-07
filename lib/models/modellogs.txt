@@ -1,0 +1,14 @@
+user:1
+joboffer:2
+subscription_plan:3
+subscription:4
+company:5
+skills:6
+student:7
+courses:8
+education:9
+experience:10
+chat_treads:11
+notification:12
+employer:13
+appreview:14
