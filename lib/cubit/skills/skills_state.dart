@@ -11,21 +11,21 @@ abstract class SkillsState extends Equatable {
 
 class SkillsInitial extends SkillsState {}
 
-class LoadingState extends SkillsState {
+class LoadingSkillsState extends SkillsState {
   bool isLoading;
 
-  LoadingState(this.isLoading);
+  LoadingSkillsState(this.isLoading);
 
   @override
   List<Object> get props => [isLoading];
 }
 
 
-class FailureState extends SkillsState {
+class FailureSkillsState extends SkillsState {
   String errorMessage;
   bool isError;
 
-  FailureState(this.errorMessage, this.isError);
+  FailureSkillsState(this.errorMessage, this.isError);
 
   @override
   List<Object> get props => [errorMessage, isError];
@@ -37,11 +37,11 @@ class FailureState extends SkillsState {
   }
 }
 
-class SuccessState extends SkillsState {
+class SuccessSkillsState extends SkillsState {
   String successMessage;
   bool isError;
 
-  SuccessState(this.successMessage, this.isError);
+  SuccessSkillsState(this.successMessage, this.isError);
 
   @override
   List<Object> get props => [successMessage, isError];
@@ -52,11 +52,11 @@ class SuccessState extends SkillsState {
     return successMessage;
   }
 }
-class SuccessSearchState extends SkillsState {
+class SuccessSearchSkillsState extends SkillsState {
   bool isError;
   List<SkillsModel> data;
 
-  SuccessSearchState(this.isError,this.data);
+  SuccessSearchSkillsState(this.isError,this.data);
 
   @override
   List<Object> get props => [isError];

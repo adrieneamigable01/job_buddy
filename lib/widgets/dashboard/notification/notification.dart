@@ -15,9 +15,21 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('notification_id',notification.id.toString()) ?? 'No ID found';
-        context.push('/notification_details');
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // prefs.setString('notification_id',notification.id.toString()) ?? 'No ID found';
+        // context.push('/notification_details');
+        
+        // Your action here
+          SharedPreferences prefs =
+              await SharedPreferences
+                  .getInstance();
+
+          // Save skill (or any string, int, bool)
+          await prefs.setString(
+              'job_offers_id',
+              notification.jobOffersId.toString());
+          context
+              .go('/job_post_details');
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -46,7 +58,7 @@ class NotificationCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'From : ${notification.companyName.toString()}',
+              'From : ${notification.jobOffersId} ${notification.companyName.toString()}',
               style: TextStyle(
                 fontSize: 15,
                 color: Colors.black54,

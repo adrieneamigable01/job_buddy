@@ -24,7 +24,7 @@ class _EducationFormState extends State<EducationForm> {
   final TextEditingController _startYearController = TextEditingController();
   final TextEditingController _endYearController = TextEditingController();
   final TextEditingController _gradeController = TextEditingController();
-  final TextEditingController _activitiesController = TextEditingController();
+  // final TextEditingController _activitiesController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   CourseModel? _selectedCourseItem;
@@ -43,7 +43,7 @@ class _EducationFormState extends State<EducationForm> {
       _startYearController.text = entry.startYear?.toString() ?? '';
       _endYearController.text = entry.endYear?.toString() ?? '';
       _gradeController.text = entry.grade ?? '';
-      _activitiesController.text = entry.activities ?? '';
+      // _activitiesController.text = entry.activities ?? '';
       _descriptionController.text = entry.description ?? '';
 
       // Assuming you have a method to get CourseModel by ID
@@ -62,7 +62,7 @@ class _EducationFormState extends State<EducationForm> {
     _startYearController.dispose();
     _endYearController.dispose();
     _gradeController.dispose();
-    _activitiesController.dispose();
+    // _activitiesController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
@@ -141,7 +141,6 @@ class _EducationFormState extends State<EducationForm> {
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
               _formKey.currentState?.reset();
-              Navigator.of(context, rootNavigator: true).pop();
             },
             context: context,
           );
@@ -197,13 +196,13 @@ class _EducationFormState extends State<EducationForm> {
             SizedBox(height: 16),
             TextFormField(
               controller: _gradeController,
-              decoration: _inputDecoration('Grade'),
+              decoration: _inputDecoration('GPA'),
             ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: _activitiesController,
-              decoration: _inputDecoration('Activities'),
-            ),
+            // SizedBox(height: 16),
+            // TextFormField(
+            //   controller: _activitiesController,
+            //   decoration: _inputDecoration('Activities'),
+            // ),
             SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
@@ -228,7 +227,7 @@ class _EducationFormState extends State<EducationForm> {
                         'start_year': _startYearController.text.trim(),
                         'end_year': _endYearController.text.trim(),
                         'grade': _gradeController.text.trim(),
-                        'activities': _activitiesController.text.trim(),
+                        // 'activities': _activitiesController.text.trim(),
                         'description': _descriptionController.text.trim(),
                       };
                       BlocProvider.of<EducationCubit>(context).updateEducation(
@@ -244,7 +243,7 @@ class _EducationFormState extends State<EducationForm> {
                     'start_year': _startYearController.text.trim(),
                     'end_year': _endYearController.text.trim(),
                     'grade': _gradeController.text.trim(),
-                    'activities': _activitiesController.text.trim(),
+                    // 'activities': _activitiesController.text.trim(),
                     'description': _descriptionController.text.trim(),
                     };
                     // Create new entry

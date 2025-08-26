@@ -35,23 +35,24 @@ class StudentModelAdapter extends TypeAdapter<StudentModel> {
       updatedAt: fields[15] as String?,
       deletedAt: fields[16] as String?,
       status: fields[17] as String?,
-      prefereAvailableTime: fields[18] as String?,
-      employmentType: fields[19] as String?,
-      jobOffersId: fields[20] as dynamic,
-      courses: fields[21] as dynamic,
-      matchReason: fields[22] as String?,
-      matchScore: fields[23] as dynamic,
-      hasJobOffer: fields[24] as dynamic,
-      jobOfferStatus: fields[25] as String?,
-      contract: fields[26] as String?,
-      contractStatus: fields[27] as String?,
+      prefereAvailableStartTime: fields[18] as String?,
+      prefereAvailableEndTime: fields[19] as String?,
+      employmentType: fields[20] as String?,
+      jobOffersId: fields[21] as dynamic,
+      courses: fields[22] as dynamic,
+      matchReason: fields[23] as String?,
+      matchScore: fields[24] as dynamic,
+      hasJobOffer: fields[25] as dynamic,
+      jobOfferStatus: fields[26] as String?,
+      contract: fields[27] as String?,
+      contractStatus: fields[28] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, StudentModel obj) {
     writer
-      ..writeByte(28)
+      ..writeByte(29)
       ..writeByte(0)
       ..write(obj.index)
       ..writeByte(1)
@@ -89,24 +90,26 @@ class StudentModelAdapter extends TypeAdapter<StudentModel> {
       ..writeByte(17)
       ..write(obj.status)
       ..writeByte(18)
-      ..write(obj.prefereAvailableTime)
+      ..write(obj.prefereAvailableStartTime)
       ..writeByte(19)
-      ..write(obj.employmentType)
+      ..write(obj.prefereAvailableEndTime)
       ..writeByte(20)
-      ..write(obj.jobOffersId)
+      ..write(obj.employmentType)
       ..writeByte(21)
-      ..write(obj.courses)
+      ..write(obj.jobOffersId)
       ..writeByte(22)
-      ..write(obj.matchReason)
+      ..write(obj.courses)
       ..writeByte(23)
-      ..write(obj.matchScore)
+      ..write(obj.matchReason)
       ..writeByte(24)
-      ..write(obj.hasJobOffer)
+      ..write(obj.matchScore)
       ..writeByte(25)
-      ..write(obj.jobOfferStatus)
+      ..write(obj.hasJobOffer)
       ..writeByte(26)
-      ..write(obj.contract)
+      ..write(obj.jobOfferStatus)
       ..writeByte(27)
+      ..write(obj.contract)
+      ..writeByte(28)
       ..write(obj.contractStatus);
   }
 

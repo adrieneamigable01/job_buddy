@@ -28,13 +28,14 @@ class NotificationModelAdapter extends TypeAdapter<NotificationModel> {
       createdAt: fields[8] as String?,
       senderName: fields[9] as String?,
       receiverName: fields[10] as String?,
+      jobOffersId: fields[11] as dynamic,
     );
   }
 
   @override
   void write(BinaryWriter writer, NotificationModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class NotificationModelAdapter extends TypeAdapter<NotificationModel> {
       ..writeByte(9)
       ..write(obj.senderName)
       ..writeByte(10)
-      ..write(obj.receiverName);
+      ..write(obj.receiverName)
+      ..writeByte(11)
+      ..write(obj.jobOffersId);
   }
 
   @override

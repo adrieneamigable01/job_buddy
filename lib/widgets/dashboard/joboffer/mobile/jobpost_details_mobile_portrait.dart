@@ -100,8 +100,7 @@ class _JobPostDetailPageMobilePortraitState
                   children: [
                     const Icon(Icons.access_time_outlined, size: 18),
                     const SizedBox(width: 5),
-                    Text(_jobOfferBox.getById(jobOfferId)?.employmenType ??
-                        'N/A'.toString()),
+                    Text(' ${_jobOfferBox.getById(jobOfferId)?.workStart ?? 'N/A'.toString()} : ${_jobOfferBox.getById(jobOfferId)?.workEnd ?? 'N/A'.toString()} - ${_jobOfferBox.getById(jobOfferId)?.employmenType ?? 'N/A'.toString()}'),
                   ],
                 ),
                 const SizedBox(height: 20),

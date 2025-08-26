@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_buddy/cubit/experience/experience_cubit.dart';
 import 'package:job_buddy/models/experience_model.dart';
+import 'package:job_buddy/models/skills_model.dart';
 import 'package:job_buddy/widgets/common/alert_dialog_widget.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
 
 class ExperienceForm extends StatefulWidget {
   final ExperienceModel? existingEntry;
@@ -23,10 +26,10 @@ class _ExperienceFormState extends State<ExperienceForm> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-
+   List<String> _skills = [];
   final alertDialog = AlertDialogWidget();
   bool _isCurrent = false;
-
+  final SkillsBox  _skillsBox = SkillsBox();
   @override
   void initState() {
     super.initState();
@@ -40,6 +43,8 @@ class _ExperienceFormState extends State<ExperienceForm> {
       _endDateController.text = entry.endDate ?? '';
       _descriptionController.text = entry.description ?? '';
       _isCurrent = entry.isCurrent ?? false;
+      _skills = entry.skills!.split(',').map((s) => s.trim()).toList();
+
     }
   }
 
@@ -96,11 +101,12 @@ class _ExperienceFormState extends State<ExperienceForm> {
 
   void _saveForm() {
     if (_formKey.currentState!.validate()) {
+      String skillsString = _skills.join(', ');
       final experiencePayload = {
         'company_name': _companyNameController.text.trim(),
         'position_title': _positionTitleController.text.trim(),
         'location': _locationController.text.trim(),
-        'skills': _skillsController.text.trim(),
+        'skills': skillsString,
         'start_date': _startDateController.text.trim(),
         'end_date': _isCurrent ? null : _endDateController.text.trim(),
         'is_current': _isCurrent,
@@ -140,7 +146,6 @@ class _ExperienceFormState extends State<ExperienceForm> {
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
               _formKey.currentState?.reset();
-              Navigator.of(context, rootNavigator: true).pop();
             },
             context: context,
           );
@@ -178,10 +183,7 @@ class _ExperienceFormState extends State<ExperienceForm> {
               decoration: _inputDecoration('Location'),
             ),
             SizedBox(height: 16),
-            TextFormField(
-              controller: _skillsController,
-              decoration: _inputDecoration('Skills'),
-            ),
+            _buildSkillsSelector(),
             SizedBox(height: 16),
             TextFormField(
               controller: _startDateController,
@@ -230,4 +232,33 @@ class _ExperienceFormState extends State<ExperienceForm> {
       ),
     );
   }
+
+  Widget _buildSkillsSelector() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: MultiSelectDialogField(
+        searchable: true,
+        initialValue: _skills,
+        items: _skillsBox.items
+            .map((skill) =>
+                MultiSelectItem<String>(skill.name ?? '', skill.name ?? ''))
+            .toList(),
+        title: Text("Select Skills"),
+        selectedColor: Color(0xff1F94D4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        buttonText: Text("Skills"),
+        onConfirm: (values) {
+          setState(() {
+            _skills = values.cast<String>();
+          });
+        },
+      ),
+    );
+  }
+
 }
+
+

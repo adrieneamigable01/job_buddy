@@ -41,13 +41,15 @@ class JobOfferModelAdapter extends TypeAdapter<JobOfferModel> {
       jobOfferStatus: fields[21] as String?,
       contract: fields[23] as String?,
       subscription: fields[24] as dynamic,
+      workStart: fields[25] as dynamic,
+      workEnd: fields[26] as dynamic,
     );
   }
 
   @override
   void write(BinaryWriter writer, JobOfferModel obj) {
     writer
-      ..writeByte(23)
+      ..writeByte(26)
       ..writeByte(0)
       ..write(obj.jobOffersId)
       ..writeByte(1)
@@ -95,7 +97,11 @@ class JobOfferModelAdapter extends TypeAdapter<JobOfferModel> {
       ..writeByte(23)
       ..write(obj.contract)
       ..writeByte(24)
-      ..write(obj.subscription);
+      ..write(obj.subscription)
+      ..writeByte(25)
+      ..write(obj.workStart)
+      ..writeByte(26)
+      ..write(obj.workEnd);
   }
 
   @override

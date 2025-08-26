@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_buddy/cubit/course/course_cubit.dart';
 import 'package:job_buddy/cubit/education/education_cubit.dart';
 import 'package:job_buddy/cubit/experience/experience_cubit.dart';
 import 'package:job_buddy/cubit/profile/profile_cubit.dart';
+import 'package:job_buddy/cubit/skills/skills_cubit.dart';
 import 'package:job_buddy/models/course_model.dart';
 import 'package:job_buddy/models/education_model.dart';
 import 'package:job_buddy/models/experience_model.dart';
@@ -175,7 +177,8 @@ class _ResumeMobilePortraitState extends State<ResumeMobilePortrait> {
                         ? SizedBox()
                         : IconButton(
                             icon: Icon(Icons.add),
-                            onPressed: () {
+                            onPressed: () async {
+                              await BlocProvider.of<CourseCubit>(context).getCourses();
                               _showEducationEditForm(context);
                             },
                           ),
@@ -210,7 +213,8 @@ class _ResumeMobilePortraitState extends State<ResumeMobilePortrait> {
                         ? SizedBox()
                         : IconButton(
                             icon: Icon(Icons.add),
-                            onPressed: () {
+                            onPressed: () async {
+                              await BlocProvider.of<SkillsCubit>(context).getSkills();
                               _showExperienceEditForm(context);
                             },
                           ),
@@ -262,8 +266,10 @@ class _ResumeMobilePortraitState extends State<ResumeMobilePortrait> {
                     }
                     return Column(
                       children: [
-                        _buildInfoRow("Preferred Time",
-                            getStudentDetails().prefereAvailableTime ?? ''),
+                        _buildInfoRow("Preferred Start Time",
+                            getStudentDetails().prefereAvailableStartTime ?? ''),
+                        _buildInfoRow("Preferred End Time",
+                            getStudentDetails().prefereAvailableEndTime ?? ''),
                         _buildInfoRow("Employment Type",
                             getStudentDetails().employmentType ?? ''),
                       ],
@@ -354,11 +360,14 @@ class _ResumeMobilePortraitState extends State<ResumeMobilePortrait> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(entry.companyName.toString(),
+                Text(entry.companyName.toString().toUpperCase(),
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 2),
-                Text(entry.positionTitle.toString(),
+                Text(entry.positionTitle.toString().toUpperCase(),
+                    style: TextStyle(color: Colors.grey[700], fontSize: 14)),
+                const SizedBox(height: 4),
+                Text(entry.skills.toString(),
                     style: TextStyle(color: Colors.grey[700], fontSize: 14)),
                 const SizedBox(height: 4),
                 Text(

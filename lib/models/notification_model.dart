@@ -39,6 +39,9 @@ class NotificationModel {
   @HiveField(10)
   String? receiverName;
 
+  @HiveField(11)
+  dynamic jobOffersId;
+
   NotificationModel({
     this.id,
     this.receiveBy,
@@ -51,6 +54,7 @@ class NotificationModel {
     this.createdAt,
     this.senderName,
     this.receiverName,
+    this.jobOffersId,
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
@@ -66,6 +70,7 @@ class NotificationModel {
       createdAt: json['created_at'],
       senderName: json['sender_name'],
       receiverName: json['receiver_name'],
+      jobOffersId: json['job_offers_id'],
     );
   }
 
@@ -81,6 +86,7 @@ class NotificationModel {
         'created_at': createdAt,
         'sender_name': senderName,
         'receiver_name': receiverName,
+        'jobOffersId': jobOffersId,
       };
 }
 

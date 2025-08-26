@@ -45,7 +45,9 @@ class _RegistrationPageMobilePortraitState
       TextEditingController(); // student
   final TextEditingController _statusController =
       TextEditingController(); // student
-  final TextEditingController _availableTimeController =
+  final TextEditingController _availableStartTimeController =
+      TextEditingController(); // student
+  final TextEditingController _availableEndTimeController =
       TextEditingController(); // student
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -139,8 +141,10 @@ class _RegistrationPageMobilePortraitState
                       if (_selectedUserType == UserType.student) ...[
                         _buildSkillsSelector(),
                         _buildCourseDropdown(),
-                        _buildPreferredTimeField("Preferred Available Time",
-                            _availableTimeController),
+                        _buildPreferredTimeField("Preferred Available Start Time",
+                            _availableStartTimeController),
+                        _buildPreferredTimeField("Preferred Available End Time",
+                            _availableEndTimeController),
                       ],
 
                       const SizedBox(height: 10),
@@ -174,7 +178,8 @@ class _RegistrationPageMobilePortraitState
                                 'gender': _genderController.text.trim(),
                                 'skills': skillsString, // Expected as an array
                                 'course_id': _selectedCourseItem?.courseId.toString(), // Must match backend
-                                'preferred_available_time': _availableTimeController.text.trim(),
+                                'preferred_available_start_time': _availableStartTimeController.text.trim(),
+                                'preferred_available_end_time': _availableEndTimeController.text.trim(),
                             };
 
                             BlocProvider.of<AuthCubit>(context)

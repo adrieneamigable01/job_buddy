@@ -3,6 +3,7 @@ import 'package:job_buddy/cubit/app_review/appreview_cubit.dart';
 import 'package:job_buddy/cubit/auth/cubit/auth_cubit.dart';
 import 'package:job_buddy/cubit/chat_threads/chat_cubit.dart';
 import 'package:job_buddy/cubit/company/company_cubit.dart';
+import 'package:job_buddy/cubit/course/course_cubit.dart';
 import 'package:job_buddy/cubit/education/education_cubit.dart';
 import 'package:job_buddy/cubit/experience/experience_cubit.dart';
 import 'package:job_buddy/cubit/joboffer/joboffer_cubit.dart';
@@ -26,6 +27,7 @@ class BlocProviders {
       BlocProvider<ChatCubit>(create: (context) => ChatCubit()),
       BlocProvider<UserValidationCubit>(create: (context) => UserValidationCubit()),
       BlocProvider<AppReviewCubit>(create: (context) => AppReviewCubit()),
+      BlocProvider<CourseCubit>(create: (context) => CourseCubit()),
     ];
   }
 }

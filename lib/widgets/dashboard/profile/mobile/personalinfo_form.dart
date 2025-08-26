@@ -30,7 +30,8 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
   final TextEditingController _skillsController = TextEditingController();
-  final TextEditingController _preferredTimeController = TextEditingController();
+  final TextEditingController _preferredStartTimeController = TextEditingController();
+  final TextEditingController _preferredEndTimeController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _selectedEmploymentTypeController = TextEditingController();
   final TextEditingController _selectedCourseItemController = TextEditingController();
@@ -57,7 +58,8 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
       _addressController.text = entry.address ?? '';
       _birthdateController.text = entry.birthdate ?? '';
       _skillsController.text = entry.skills ?? '';
-      _preferredTimeController.text = entry.prefereAvailableTime ?? '';
+      _preferredStartTimeController.text = entry.prefereAvailableStartTime ?? '';
+      _preferredEndTimeController.text = entry.prefereAvailableEndTime ?? '';
       _selectedGender = entry.gender??'Male';
       _selectedEmploymentType = entry.employmentType == "" ? "Full Time" : entry.employmentType ?? 'Full Time';
        _skills = entry.skills!.split(',').map((s) => s.trim()).toList();
@@ -79,7 +81,8 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
     _addressController.dispose();
     _birthdateController.dispose();
     _skillsController.dispose();
-    _preferredTimeController.dispose();
+    _preferredStartTimeController.dispose();
+    _preferredEndTimeController.dispose();
     super.dispose();
   }
 
@@ -140,7 +143,6 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
               _formKey.currentState?.reset();
-              Navigator.of(context, rootNavigator: true).pop();
             },
             context: context,
           );
@@ -205,8 +207,11 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
             SizedBox(height: 16),
             _buildCourseDropdown(),
             SizedBox(height: 16),
-            _buildPreferredTimeField("Preferred Available Time",
-                            _preferredTimeController),
+            _buildPreferredTimeField("Preferred Available Start Time",
+                            _preferredStartTimeController),
+            SizedBox(height: 16),
+            _buildPreferredTimeField("Preferred Available End Time",
+                            _preferredEndTimeController),
             SizedBox(height: 16),
             _buildEmploymentTypeField('Employment Type',_selectedEmploymentTypeController),
             SizedBox(height: 16),
@@ -225,7 +230,8 @@ class _PersonalInfoFormState extends State<PersonalInfoForm> {
                     'gender': _selectedGender,
                     'skills': skillsString,
                     'course_id': _selectedCourseItem?.courseId.toString(),
-                    'preferred_available_time': _preferredTimeController.text.trim(),
+                    'prefere_available_start_time': _preferredStartTimeController.text.trim(),
+                    'prefere_available_end_time': _preferredEndTimeController.text.trim(),
                     'employment_type': _selectedEmploymentType.toString(),
                   };
 

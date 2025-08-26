@@ -25,11 +25,11 @@ class SkillsCubit extends Cubit<SkillsState> {
     ResponseModel responseModel = ResponseModel(json: response);
     
     if (!responseModel.isError) {
-      await clearBoxes();
+      await _skillsBox.clear();
       await _skillsBox.insertAll(responseModel);
     } else {
-      emit(LoadingState(false));
-      emit(FailureState(responseModel.message, responseModel.isError));
+      emit(LoadingSkillsState(false));
+      emit(FailureSkillsState(responseModel.message, responseModel.isError));
      
     }
   }

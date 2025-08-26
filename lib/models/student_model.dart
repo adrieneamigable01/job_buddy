@@ -61,33 +61,36 @@ class StudentModel {
   String? status;
 
   @HiveField(18)
-  String? prefereAvailableTime;
+  String? prefereAvailableStartTime;
 
   @HiveField(19)
-  String? employmentType;
+  String? prefereAvailableEndTime;
 
   @HiveField(20)
-  dynamic jobOffersId;
+  String? employmentType;
 
   @HiveField(21)
+  dynamic jobOffersId;
+
+  @HiveField(22)
   dynamic courses;
 
-   @HiveField(22)
+   @HiveField(23)
   String? matchReason;
 
-  @HiveField(23)
+  @HiveField(24)
   dynamic matchScore;
 
-  @HiveField(24)
+  @HiveField(25)
   dynamic hasJobOffer;
 
-  @HiveField(25)
+  @HiveField(26)
   String? jobOfferStatus;
 
-  @HiveField(26)
+  @HiveField(27)
   String? contract;
 
-  @HiveField(27)
+  @HiveField(28)
   String? contractStatus;
 
   StudentModel({
@@ -109,7 +112,8 @@ class StudentModel {
     this.updatedAt,
     this.deletedAt,
     this.status,
-    this.prefereAvailableTime,
+    this.prefereAvailableStartTime,
+    this.prefereAvailableEndTime,
     this.employmentType,
     this.jobOffersId,
     this.courses,
@@ -141,7 +145,8 @@ class StudentModel {
       updatedAt: json['updated_at'],
       deletedAt: json['deleted_at'],
       status: json['status'],
-      prefereAvailableTime: json['prefere_available_time'],
+      prefereAvailableStartTime: json['prefere_available_start_time'],
+      prefereAvailableEndTime: json['prefere_available_end_time'],
       employmentType: json['employment_type'],
       jobOffersId: json['jobOffersId'],
       courses: json['courses'],
@@ -173,7 +178,8 @@ class StudentModel {
         'updated_at': updatedAt,
         'deleted_at': deletedAt,
         'status': status,
-        'prefere_available_time': prefereAvailableTime,
+        'prefere_available_start_time': prefereAvailableStartTime,
+        'prefere_available_end_time': prefereAvailableEndTime,
         'employment_type': employmentType,
         'jobOffersId': jobOffersId,
         'courses': courses,

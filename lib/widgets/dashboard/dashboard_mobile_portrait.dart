@@ -8,6 +8,7 @@ import 'package:job_buddy/cubit/chat_threads/chat_cubit.dart';
 import 'package:job_buddy/cubit/dashboard/dashboard_cubit.dart';
 import 'package:job_buddy/cubit/joboffer/joboffer_cubit.dart';
 import 'package:job_buddy/cubit/profile/profile_cubit.dart';
+import 'package:job_buddy/cubit/skills/skills_cubit.dart';
 import 'package:job_buddy/models/chat_thread_model.dart';
 import 'package:job_buddy/models/company_model.dart';
 import 'package:job_buddy/models/joboffer_model.dart';
@@ -258,6 +259,7 @@ class _DashboardMobilePortraitState extends State<DashboardMobilePortrait> {
     _refresh() async {
       print("refreshing..");
       BlocProvider.of<ProfileCubit>(context).getProfile();
+      BlocProvider.of<SkillsCubit>(context).getSkills();
     }
 
     return MultiBlocProvider(
@@ -561,25 +563,42 @@ class _DashboardMobilePortraitState extends State<DashboardMobilePortrait> {
                                                                           .ellipsis,
                                                                   maxLines: 2,
                                                                 ),
-                                                                Text(
-                                                                  "${JobOfferBox().items[index].companyName}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          8),
+                                                                Row(
+                                                                  children: [
+                                                                    const Icon(Icons.location_on_outlined, size: 14),
+                                                                    const SizedBox(width: 5),
+                                                                    Text(JobOfferBox().items[index]?.location.toString().toUpperCase() ??
+                                                                        'N/A'.toString()),
+                                                                  ],
                                                                 ),
-                                                                SizedBox(
-                                                                    height: 10),
-                                                                Text(
-                                                                  "${JobOfferBox().items[index].skills}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          9),
+                                                                Row(
+                                                                  children: [
+                                                                    const Icon(Icons.business , size: 14),
+                                                                    const SizedBox(width: 5),
+                                                                    Text(JobOfferBox().items[index]?.companyName.toString().toUpperCase() ??
+                                                                        'N/A'.toString()),
+                                                                  ],
                                                                 ),
-                                                                Text(
-                                                                  "${JobOfferBox().items[index].location}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          9),
+                                                                const SizedBox(height: 5),
+                                                                Row(
+                                                                  children: [
+                                                                    const Icon(Icons.business_center_outlined, size: 14),
+                                                                    const SizedBox(width: 5),
+                                                                    Flexible(
+                                                                      child: Text(JobOfferBox().items[index]?.skills ??
+                                                                          'N/A'.toString(),
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          maxLines: 1,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    const Icon(Icons.access_time_outlined, size: 14),
+                                                                    const SizedBox(width: 5),
+                                                                    Text(' ${JobOfferBox().items[index]?.workStart ?? 'N/A'.toString()} : ${JobOfferBox().items[index]?.workEnd ?? 'N/A'.toString()}}'),
+                                                                  ],
                                                                 ),
                                                               ],
                                                             ),
@@ -703,7 +722,7 @@ class _DashboardMobilePortraitState extends State<DashboardMobilePortrait> {
                                                               .validationStatus ==
                                                           "Need Validate"
                                                       ? "Update your validation?"
-                                                      : 'You need to complete your verification before posting a job.',
+                                                      :  'You need to complete your verification before you can use this feature.',
                                                   onPressCancel: () {
                                                     Navigator.of(context)
                                                         .pop(); // Close the dialog

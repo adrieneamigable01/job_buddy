@@ -8,6 +8,7 @@ import 'package:job_buddy/models/company_model.dart';
 import 'package:job_buddy/models/skills_model.dart';
 import 'package:job_buddy/models/user_model.dart';
 import 'package:job_buddy/widgets/common/alert_dialog_widget.dart';
+import 'package:job_buddy/widgets/common/textfield_widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';  // Import the package
 
 class AddPostMobilePortrait extends StatefulWidget {
@@ -29,6 +30,8 @@ class _AddPostMobilePortraitState extends State<AddPostMobilePortrait> {
   final TextEditingController _jobDescriptionController = TextEditingController();
   final TextEditingController _companyOverviewController = TextEditingController(); // Add for company overview
   final TextEditingController _qualificationsController = TextEditingController(); // Add for qualifications
+  final TextEditingController _preferredStartTimeController = TextEditingController(); // Add for qualifications
+  final TextEditingController _preferredEndTimeController = TextEditingController(); // Add for qualifications
 
   List<String> _skills = [];
   List<String> _qualifications = [];  // List to store qualifications
@@ -116,6 +119,12 @@ class _AddPostMobilePortraitState extends State<AddPostMobilePortrait> {
                   const SizedBox(height: 10),
                   _buildTextField("Company Overview", _companyOverviewController, maxLines: 3), // Add company overview section
                   const SizedBox(height: 10),
+                   _buildPreferredTimeField("Preferred Available Start Time",
+                                  _preferredStartTimeController),
+                  SizedBox(height: 10),
+                  _buildPreferredTimeField("Preferred Available End Time",
+                                  _preferredEndTimeController),
+                  const SizedBox(height: 10),
                   Text(
                     "Employment Type",
                     style: TextStyle(fontSize: 14, color: Colors.grey[700]),
@@ -190,6 +199,8 @@ class _AddPostMobilePortraitState extends State<AddPostMobilePortrait> {
                                 'job_description': _jobDescriptionController.text,
                                 'company_overview': _companyOverviewController.text,  // Include company overview
                                 'employment_type': _employmentType,
+                                'work_start': _preferredStartTimeController.text,
+                                'work_end': _preferredEndTimeController.text,
                                 'qualifications': _qualifications.join(', '),  // Add qualifications to payload
                               };
                             
@@ -223,6 +234,33 @@ class _AddPostMobilePortraitState extends State<AddPostMobilePortrait> {
     );
   }
 
+  Widget _buildPreferredTimeField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: GestureDetector(
+        onTap: () async {
+          TimeOfDay? pickedTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+          );
+          if (pickedTime != null) {
+            final hour = pickedTime.hour.toString().padLeft(2, '0');
+            final minute = pickedTime.minute.toString().padLeft(2, '0');
+            controller.text = '$hour:$minute'; // Format as HH:MM
+          }
+        },
+        child: AbsorbPointer(
+          child: TextFieldWidget().textWithBorder(
+            labelText: label,
+            controller: controller,
+            onChanged: (val) {},
+            onFieldSubmitted: (val) {},
+          ),
+        ),
+      ),
+    );
+  }
+  
   Widget _buildSkillsSelector() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -275,19 +313,32 @@ class _AddPostMobilePortraitState extends State<AddPostMobilePortrait> {
           },
         ),
         const SizedBox(height: 10),
-        // Display qualifications with bullets
-        ..._qualifications.map((qualification) {
+        // Display qualifications with bullets + remove button
+        ..._qualifications.asMap().entries.map((entry) {
+          int index = entry.key;
+          String qualification = entry.value;
+
           return Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.brightness_1, size: 10, color: Colors.black),
+              const Icon(Icons.brightness_1, size: 10, color: Colors.black),
               const SizedBox(width: 5),
               Expanded(child: Text(qualification)),
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.red, size: 18),
+                onPressed: () {
+                  setState(() {
+                    _qualifications.removeAt(index);
+                  });
+                },
+              ),
             ],
           );
         }).toList(),
       ],
     );
   }
+
 
   Widget _buildTextField(String label, TextEditingController controller,
       {int maxLines = 1, TextInputType keyboardType = TextInputType.text}) {

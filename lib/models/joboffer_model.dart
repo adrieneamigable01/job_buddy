@@ -59,6 +59,10 @@ class JobOfferModel {
   String? contract;
   @HiveField(24)
   dynamic subscription;
+  @HiveField(25)
+  dynamic workStart;
+  @HiveField(26)
+  dynamic workEnd;
  
 
   JobOfferModel({
@@ -86,6 +90,8 @@ class JobOfferModel {
     this.jobOfferStatus,
     this.contract,
     this.subscription,
+    this.workStart,
+    this.workEnd,
 
   });
   JobOfferModel.fromJson(Map<String, dynamic> json)
@@ -112,6 +118,8 @@ class JobOfferModel {
         hasJobOffer = json['has_job_offer'],
         jobOfferStatus = json['job_offer_status'],
         contract = json['contract'],
+        workStart = json['work_start'],
+        workEnd = json['work_end'],
         subscription = json['subscription'];
 
   Map<String, dynamic> toJson() => {
@@ -139,6 +147,8 @@ class JobOfferModel {
         'jobOfferStatus': jobOfferStatus,
         'contract': contract,
         'subscription': subscription,
+        'workStart': workStart,
+        'workEnd': workEnd,
        
       };
 }

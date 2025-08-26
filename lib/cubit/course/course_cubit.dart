@@ -27,7 +27,7 @@ class CourseCubit extends Cubit<CourseState> {
     ResponseModel responseModel = ResponseModel(json: response);
     
     if (!responseModel.isError) {
-      await clearBoxes();
+      await _courseBox.clear();
       await _courseBox.insertAll(responseModel);
     } else {
       emit(LoadingCourseState(false));

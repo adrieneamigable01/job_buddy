@@ -33,7 +33,7 @@ class SubscriptionModelAdapter extends TypeAdapter<SubscriptionModel> {
   @override
   void write(BinaryWriter writer, SubscriptionModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
