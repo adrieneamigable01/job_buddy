@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_buddy/cubit/user_validation/user_validation_cubit.dart';
-import 'package:job_buddy/models/user_model.dart';
 import 'package:job_buddy/widgets/common/alert_dialog_widget.dart';
 import 'package:path/path.dart' as path;
 
@@ -21,22 +20,19 @@ class _UploadValidationMobilePortraitState
     extends State<UploadValidationMobilePortrait> {
   final _formKey = GlobalKey<FormState>();
   final AlertDialogWidget alertDialog = AlertDialogWidget();
-  final UserBox _userBox = UserBox();
   bool isLoading = false;
   File? _selectedImage;
   File? _selectedSelfie;
   String? _selectedDocType;
   String? base64SelfieFormatted;
 
-  List<String> _docTypes = [
+  final List<String> _docTypes = [
     'Business Permit',
     'Valid ID',
     'Company Registration',
+    'Student ID',
     'Other'
   ];
-
-
-  
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -53,64 +49,62 @@ class _UploadValidationMobilePortraitState
     }
   }
 
- void _submit() async {
-  final isValidForm = _formKey.currentState?.validate() ?? false;
-  final hasImage = _selectedImage != null;
+  void _submit() async {
+    final isValidForm = _formKey.currentState?.validate() ?? false;
+    final hasImage = _selectedImage != null;
 
-  if (isValidForm && hasImage) {
-    try {
-      final bytes = await _selectedImage!.readAsBytes();
-      final base64Content = base64Encode(bytes);
-      final fileName = _selectedImage!.path.split('/').last;
-      String fileExtension = fileName.split('.').last.toLowerCase();
+    if (isValidForm && hasImage) {
+      try {
+        final bytes = await _selectedImage!.readAsBytes();
+        final base64Content = base64Encode(bytes);
+        final fileName = _selectedImage!.path.split('/').last;
+        String fileExtension = fileName.split('.').last.toLowerCase();
 
-      // Normalize extension: jpg -> jpeg
-      if (fileExtension == 'jpg') {
-        fileExtension = 'jpeg';
+        // Normalize extension: jpg -> jpeg
+        if (fileExtension == 'jpg') {
+          fileExtension = 'jpeg';
+        }
+
+        final base64Formatted = 'data:@file/$fileExtension;base64,$base64Content';
+
+        final payload = {
+          'document_type': _selectedDocType,
+          'document_path': base64Formatted,
+          'base64Selfie': base64SelfieFormatted,
+          'file_name': fileName,
+        };
+
+        BlocProvider.of<UserValidationCubit>(context).uploadUserValidation(payload);
+
+        alertDialog.showConfirmDialog(
+          isError: false,
+          title: 'Submitted',
+          content: 'Your document has been uploaded for validation.',
+          onPressCancel: () => context.pop(),
+          onPressedConfirm: () => context.go('/dashboard'),
+          context: context,
+        );
+      } catch (e) {
+        alertDialog.showConfirmDialog(
+          isError: true,
+          title: 'Error',
+          content: 'An error occurred while processing the file. Please try again.',
+          onPressCancel: () => context.pop(),
+          onPressedConfirm: () => context.pop(),
+          context: context,
+        );
       }
-
-      final base64Formatted = 'data:@file/$fileExtension;base64,$base64Content';
-
-      final payload = {
-        'document_type': _selectedDocType,
-        'document_path': base64Formatted,
-        'base64Selfie': base64SelfieFormatted,
-        'file_name': fileName,
-      };
-
-      BlocProvider.of<UserValidationCubit>(context).uploadUserValidation(payload);
-
-      alertDialog.showConfirmDialog(
-        isError: false,
-        title: 'Submitted',
-        content: 'Your document has been uploaded for validation.',
-        onPressCancel: () => context.pop(),
-        onPressedConfirm: () => context.go('/dashboard'),
-        context: context,
-      );
-    } catch (e) {
+    } else {
       alertDialog.showConfirmDialog(
         isError: true,
-        title: 'Error',
-        content: 'An error occurred while processing the file. Please try again.',
+        title: 'Missing Information',
+        content: 'Please select both a document type and a file.',
         onPressCancel: () => context.pop(),
         onPressedConfirm: () => context.pop(),
         context: context,
       );
     }
-  } else {
-    alertDialog.showConfirmDialog(
-      isError: true,
-      title: 'Missing Information',
-      content: 'Please select both a document type and a file.',
-      onPressCancel: () => context.pop(),
-      onPressedConfirm: () => context.pop(),
-      context: context,
-    );
   }
-}
-
-
 
   String _getMimeType(String extension) {
     switch (extension) {
@@ -130,7 +124,7 @@ class _UploadValidationMobilePortraitState
     }
   }
 
- Future<void> _makeSelfie() async {
+  Future<void> _makeSelfie() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
@@ -155,22 +149,13 @@ class _UploadValidationMobilePortraitState
         _selectedSelfie = file;
         base64SelfieFormatted = formatted;
       });
-
+      
       print("📸 Base64 Formatted Selfie: ${formatted.substring(0, 60)}...");
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-    if(_userBox.data.usertype == 'student'){
-        _docTypes = [
-          'Student ID',
-          'Other'
-        ];
-    }
-
     return Scaffold(
       backgroundColor: const Color(0xffB5E5E6),
       appBar: AppBar(
@@ -183,7 +168,7 @@ class _UploadValidationMobilePortraitState
           onPressed: () => context.pop(),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView( // Added SingleChildScrollView here
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
@@ -230,7 +215,6 @@ class _UploadValidationMobilePortraitState
                             alignment: Alignment.center,
                             child: Image.file(
                               _selectedImage!,
-                              // Remove hardcoded fit here to let FittedBox handle it
                             ),
                           ),
                         ),
@@ -247,7 +231,7 @@ class _UploadValidationMobilePortraitState
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.grey),
                   ),
-                  child: base64SelfieFormatted  == null
+                  child: base64SelfieFormatted == null
                       ? const Center(child: Text("Tap to capture a selfie"))
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(12),
@@ -262,9 +246,8 @@ class _UploadValidationMobilePortraitState
               const SizedBox(height: 30),
               BlocBuilder<UserValidationCubit, UserValidationState>(
                 builder: (context, state) {
-              
-                  if(state is LoadingUserValidationState){
-                      isLoading = state.isLoading;
+                  if (state is LoadingUserValidationState) {
+                    isLoading = state.isLoading;
                   }
                   return ElevatedButton(
                     onPressed: _submit,
@@ -276,7 +259,7 @@ class _UploadValidationMobilePortraitState
                           borderRadius: BorderRadius.circular(30)),
                     ),
                     child: Text(isLoading ? 'Uploading' : "Submit",
-                        style: isLoading ?TextStyle(color: Colors.grey, fontSize: 16) : TextStyle(color: Colors.black, fontSize: 16)),
+                        style: isLoading ? TextStyle(color: Colors.grey, fontSize: 16) : TextStyle(color: Colors.black, fontSize: 16)),
                   );
                 },
               )
